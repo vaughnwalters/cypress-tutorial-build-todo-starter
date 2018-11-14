@@ -1,6 +1,7 @@
 describe("Input form", () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.server()
   })
   
   it("focuses input on load", () => {
@@ -17,11 +18,10 @@ describe("Input form", () => {
   }) 
 
   context('Form submission', () => {
-    it.only('Adds a new todo on submit', () => {
+    it('Adds a new todo on submit', () => {
       const itemText = 'Buy eggs'
 
       // use the following to stub an API response
-      cy.server()
       cy.route('POST', '/api/todos', {
         name: 'itemText', 
         id: 1,
@@ -31,9 +31,29 @@ describe("Input form", () => {
       cy.get('.new-todo')
         .type('itemText')
         .type('{enter}')
+        .should('have.value', '')
+
       cy.get('.todo-list li')
         .should('have.length', 1)
         .and('contain', 'itemText')
+    })
+
+    it('Shows an error message on a failed submission', () => {
+      cy.route({
+        url: '/api/todos',
+        method: 'POST',
+        status: 500,
+        response: {}
+      })
+    
+      cy.get('.new-todo')
+        .type('test{enter}')
+        
+      cy.get('.todo-list li')
+        .should('not.exist')
+
+      cy.get('.error')
+        .should('be.visible')
     })
   })
 })
