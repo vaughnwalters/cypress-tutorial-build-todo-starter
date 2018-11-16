@@ -1,7 +1,7 @@
 describe("Input form", () => {
   beforeEach(() => {
     cy.visit('/')
-    cy.server()
+   cy.server()
   })
   
   it("focuses input on load", () => {
@@ -11,7 +11,7 @@ describe("Input form", () => {
   })
 
   it('accepts input', () => {
-    const typedText='Buy Milk'
+    const typedText='Buy Soylent'
     cy.get('.new-todo')
       .type(typedText)
       .should('have.value', typedText)
