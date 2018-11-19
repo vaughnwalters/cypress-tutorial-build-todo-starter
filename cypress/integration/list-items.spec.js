@@ -7,7 +7,7 @@ describe('List items', () => {
     cy.get('.todo-list li')
       .filter('.completed')
       .should('have.length', 1)
-      .and('contain', 'Soylent')
+      .and('contain', 'Drink')
       .find('.toggle')
       .should('be.checked')
   })
@@ -26,10 +26,17 @@ describe('List items', () => {
     })
 
     cy.get('.todo-list li')
+      .as('list')
+
+    cy.get('@list')
       .first()
       .find('.destroy')
-      // force.true means internal elements that makes sure cypress can interact with the element will be disabled for this command - in this case, element is invisible because of css class, but we are clicking it anyway
-      .click({force: true})
+      .invoke('show')
+      .click()
+
+    cy.get('@list')
+      .should('have.length', 3)
+      .and('not.contain', 'Dirt')
   })
 })
 
