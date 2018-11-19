@@ -1,12 +1,12 @@
 describe('App initialization', () => {
-  it.only('Loads todos on page load', () => {
+  it('Loads todos on page load', () => {
     cy.seedAndVisit()
 
     cy.get('.todo-list li')
       .should('have.length', 4)
   })
 
-  it.only('Displays an error on failure', () => {
+  it('Displays an error on failure', () => {
     cy.server()
     cy.route({
       url: '/api/todos', 
